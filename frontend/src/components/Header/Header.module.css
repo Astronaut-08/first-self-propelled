@@ -1,0 +1,209 @@
+/* ==========================================================================
+   ДЕСКТОПНІ СТИЛІ (БАЗА)
+   ========================================================================== */
+.header {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  background-color: #050503; 
+  border-radius: 20px;
+  padding: 12px 24px;
+  max-width: 1200px;
+  width: calc(100% - 40px);
+}
+
+.logo {
+  height: 56px;
+  width: auto;
+  margin-right: 18px;
+}
+
+.title {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.3;
+  max-width: 440px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.desktopNav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.button {
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 10px 16px;
+  transition: opacity 0.2s;
+}
+
+.button:hover { opacity: 0.7; }
+
+.add-button {
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  font-size: 15px;
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 10px 28px;
+  border-radius: 50px;
+  margin-left: 12px;
+  transition: background-color 0.2s;
+}
+
+.add-button:hover { background-color: #e0e0e0; }
+
+.burgerMenu, .mobileMenu { display: none; }
+
+/* ==========================================================================
+   МОБІЛЬНА ВЕРСІЯ (Екрани до 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .desktopNav, .title {
+    display: none; /* Ховаємо десктопні елементи */
+  }
+
+  .header {
+    background-color: transparent; /* Сам базовий хедер стає невидимим капсульно */
+    width: 100%;
+    top: 0;
+    padding: 16px 20px;
+  }
+
+  .burgerMenu {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+  }
+
+  /* ------------------------------------------------------------------------
+     СТИЛІЗУВАЦІЯ ТА АНІМАЦІЯ МОДАЛЬНОГО ВІКНА (14.png)
+     ------------------------------------------------------------------------ */
+  .mobileMenu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #050503; /* Колір тла з вашого макета */
+    z-index: 999;
+    
+    /* Ефект згортання (за замовчуванням меню сховане вгорі) */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-100%);
+    
+    /* Налаштування плавності розгортання */
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.3s ease, 
+                visibility 0.4s;
+  }
+
+  /* Клас-тригер, який активується через React стан `isMenuOpen` */
+  .menuOpen {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Меню виїжджає на екран */
+  }
+
+  /* Шапка всередині модалки */
+  .modalHeader {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Лінія-розділювач з макета */
+    width: 100%;
+  }
+
+  .modalLogo {
+    height: 44px;
+    width: auto;
+    margin-right: 12px;
+  }
+
+  .modalTitle {
+    color: #ffffff;
+    font-size: 10px; /* Дрібний, але читабельний шрифт, як на фото */
+    font-weight: 700;
+    line-height: 1.3;
+    max-width: 65%;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .closeMenu {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 4px;
+  }
+
+  /* Контентна частина з посиланнями */
+  .modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    padding: 40px 24px;
+    gap: 32px; /* Відступи між текстовими пунктами меню */
+  }
+
+  .modalLink {
+    background: none;
+    border: none;
+    font-family: inherit;
+    color: #ffffff;
+    font-size: 1.3rem; /* Великі зручні лінки для натискання пальцем */
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    transition: opacity 0.2s;
+  }
+  
+  .modalLink:hover { opacity: 0.7; }
+
+  /* Біла капсула кнопки "Долучайся" знизу модалки */
+  .modalAddButton {
+    background: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 1.2rem;
+    font-weight: 700;
+    width: 100%;
+    max-width: 400px; /* Щоб кнопка не була занадто розтягнутою на великих телефонах */
+    padding: 16px 0;
+    border-radius: 50px;
+    margin-top: auto; /* Штовхає кнопку в самий нижній край контенту */
+    text-align: center;
+    transition: background-color 0.2s;
+  }
+
+  .modalAddButton:hover { background-color: #e0e0e0; }
+}

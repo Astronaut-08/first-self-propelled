@@ -1,0 +1,91 @@
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh; /* Робить секцію на весь екран */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 40px 20px;
+  
+  /* Фоновий колір-заглушка (взятий з макета), поки відео завантажується */
+  background-color: #444340; 
+}
+
+/* Стилі для фонового відео */
+.videoBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Відео розтягується без спотворень, як background-size: cover */
+  z-index: 1;        /* Відео на самому нижньому шарі */
+  pointer-events: none; /* Щоб кліки миші проходили крізь відео на кнопку */
+}
+
+/* Обов'язково додаємо z-index: 2 та position: relative для тексту та кнопки, 
+   щоб вони піднялися НАД відео, інакше відео їх перекриє */
+
+.title {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  font-size: clamp(2rem, 5vw, 4rem); /* Адаптивний розмір: зменшується на мобільних */
+  font-weight: 800;
+  text-transform: uppercase;         /* Робимо всі літери великими, як на фото */
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  max-width: 850px;                  /* Обмежуємо ширину, щоб текст гарно розбивався */
+  margin-bottom: 40px;
+}
+
+.button {
+  position: relative;
+  z-index: 2;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 18px 48px;
+  border: none;
+  border-radius: 50px;              /* Ідеально округла капсула */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+  background-color: #e5e5e5;
+  transform: translateY(-2px);       /* Легке підстрибування при наведенні */
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Затемнення на 30% */
+  z-index: 1.5; /* Між відео (1) та текстом (2) */
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem; /* Фіксований або адаптивний розмір для мобільних */
+    line-height: 1.1;
+    max-width: 320px;  /* Обмежуємо ширину, щоб текст став точно як на фото */
+    margin-bottom: 32px;
+  }
+  
+  .button {
+    font-size: 1.1rem;
+    padding: 16px 40px;
+    width: auto;       /* Кнопка залишається акуратною капсулою по центру */
+  }
+}

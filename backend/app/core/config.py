@@ -1,5 +1,5 @@
 from pathlib import Path
-from pydantic import EmailStr, PostgresDsn
+from pydantic import EmailStr, MySQLDsn, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     API_V1_STR: str = '/api/v1'
 
-    DATABASE_URL = PostgresDsn
+    DATABASE_URL = MySQLDsn
 
     META_API_VERSION: str = "v18.0"
     META_ACCESS_TOKEN: str

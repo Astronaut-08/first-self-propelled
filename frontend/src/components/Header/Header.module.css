@@ -105,7 +105,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 50vh;
     background-color: #050503; /* Колір тла з вашого макета */
     z-index: 999;
     
@@ -200,7 +200,6 @@
     max-width: 400px; /* Щоб кнопка не була занадто розтягнутою на великих телефонах */
     padding: 16px 0;
     border-radius: 50px;
-    margin-top: auto; /* Штовхає кнопку в самий нижній край контенту */
     text-align: center;
     transition: background-color 0.2s;
   }

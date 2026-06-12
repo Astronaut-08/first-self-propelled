@@ -1,0 +1,72 @@
+/* Головний контейнер секції */
+.content-section {
+    background-color: #0b0a09; /* Темний фон як на макеті */
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px; /* Відступ між двома блоками */
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+/* Рядок (контейнер для тексту та фото) */
+.content-row {
+    display: flex;
+    align-items: center; /* Центрування по вертикалі */
+    justify-content: space-between;
+    gap: 60px; /* Відступ між текстом та картинкою в одному рядку */
+}
+
+/* Обидва блоки займають рівну ширину 50% */
+.content-text-container,
+.content-image-container {
+    flex: 1;
+    width: 50%;
+}
+
+/* ==========================================================
+   Адаптивність (Медіа-запит для мобільних екранів, < 768px)
+   Як на макеті image_1.png
+   ========================================================== */
+@media (max-width: 768px) {
+    .content-section {
+        padding: 40px 20px; /* Менші бічні відступи */
+        gap: 48px; /* Менший відступ між основними блоками */
+    }
+
+    .content-row {
+        flex-direction: column; /* Вертикальне розташування: один стовпець */
+        gap: 24px; /* Відступ між текстом та фото в одному блоці */
+    }
+
+    /* На мобільних обидва блоки займають 100% ширини */
+    .content-text-container,
+    .content-image-container {
+        width: 100%;
+        flex: none; /* Відключити розтягнення по флексу */
+    }
+
+    /* Оскільки в JSX у другому блоці Image йде першим, 
+       щоб текст був ЗВЕРХУ, потрібно реверсувати порядок лише у другому рядку */
+    .content-row:nth-child(2) {
+        flex-direction: column-reverse; 
+    }
+
+    /* Менший розмір заголовка та відступи */
+    .content-title {
+        font-size: 1.8rem;
+        margin-bottom: 16px;
+    }
+
+    /* Створення квадратних фотографій, object-fit: cover */
+    .content-image-wrapper {
+        aspect-ratio: 1 / 1; /* Робить wrapper квадратним */
+    }
+
+    .content-img {
+        height: 100%; /* Заповнює квадратний wrapper */
+        object-fit: cover; /* Підрізає зображення, не деформуючи його */
+    }
+}

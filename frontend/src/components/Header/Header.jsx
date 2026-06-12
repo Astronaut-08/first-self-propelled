@@ -9,7 +9,7 @@ const Header = () => {
 <>
       {/* ОСНОВНИЙ ХЕДЕР (який видно на сторінці) */}
       <header className={styles.header}>
-        <img src={logo} alt='logo' className={styles.logo} />
+        <a href='#main'><img src={logo} alt='logo' className={styles.logo}/></a>
         <h1 className={styles.title}>
           1 САМОХІДНИЙ АРТИЛЕРІЙСЬКИЙ ДИВІЗІОН 45 ОКРЕМОЇ АРТИЛЕРІЙСЬКОЇ БРИГАДИ ІМЕНІ ГЕНЕРАЛА МИРОНА ТАРНАВСЬКОГО
         </h1>
@@ -23,8 +23,8 @@ const Header = () => {
 
         {/* Десктопна навігація (на мобільних ховається) */}
         <nav className={styles.desktopNav}>
-          <button className={styles.button}>Про нас</button>
-          <button className={styles.button}>Запитання</button>
+          <a href='#about' className={styles.button}>Про нас</a>
+          <a href='#faq' className={styles.button}>Запитання</a>
           <button className={styles.button}>Допомогти підрозділу</button>
           <button className={styles['add-button']}>Долучайся</button>
         </nav>
@@ -48,8 +48,8 @@ const Header = () => {
 
         {/* Список вертикальних посилань */}
         <div className={styles.modalContent}>
-          <button className={styles.modalLink} onClick={() => setIsMenuOpen(false)}>Про нас</button>
-          <button className={styles.modalLink} onClick={() => setIsMenuOpen(false)}>Запитання</button>
+          <a href='#about' className={styles.modalLink} onClick={() => setIsMenuOpen(false)}>Про нас</a>
+          <a href='#faq' className={styles.modalLink} onClick={() => setIsMenuOpen(false)}>Запитання</a>
           <button className={styles.modalLink} onClick={() => setIsMenuOpen(false)}>Допомогти підрозділу</button>
           <button className={styles.modalAddButton} onClick={() => setIsMenuOpen(false)}>Долучайся</button>
         </div>

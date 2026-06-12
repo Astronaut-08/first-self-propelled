@@ -1,0 +1,102 @@
+/* Головний контейнер всієї сторінки/секції */
+.faq-page {
+    background-color: #0b0a09; /* Глибокий темний фон */
+    color: #ffffff;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрує блоки по горизонталі */
+    min-height: 100vh;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+/* --- ВЕРХНІЙ БЛОК --- */
+.faq-header {
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 600px;
+}
+
+.faq-main-title {
+    font-size: 2.5rem; /* Великий жирний заголовок */
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+}
+
+.faq-subtitle {
+    color: #a1a1aa; /* Текст підзаголовка сірого кольору */
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* --- ЦЕНТРАЛЬНИЙ БЛОК (СПИСОК) --- */
+.faq-list-wrapper {
+    width: 100%;
+    max-width: 760px; /* Обмежує ширину акордеона, як на макеті */
+    margin-bottom: 64px; /* Відступ до нижнього блоку */
+}
+
+/* --- НИЖНІЙ БЛОК (CTA) --- */
+.faq-cta {
+    text-align: center;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.faq-cta-title {
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+}
+
+.faq-cta-subtitle {
+    color: #a1a1aa;
+    font-size: 1rem;
+    margin-bottom: 24px;
+}
+
+/* Кнопка "Написати" */
+.faq-cta-button {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #71717a; /* Тонка сіро-біла рамка */
+    padding: 10px 36px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 50px; /* Форма пігулки */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Ефект при наведенні на кнопку */
+.faq-cta-button:hover {
+    background-color: #ffffff;
+    color: #0b0a09;
+    border-color: #ffffff;
+}
+
+/* --- АДАПТИВНІСТЬ ДЛЯ МОБІЛЬНИХ --- */
+@media (max-width: 768px) {
+    .faq-page {
+        padding: 60px 16px;
+    }
+
+    .faq-main-title {
+        font-size: 2rem;
+    }
+
+    .faq-cta-title {
+        font-size: 1.6rem;
+    }
+
+    .faq-list-wrapper {
+        margin-bottom: 48px;
+    }
+}

@@ -18,7 +18,7 @@ const Question = () => {
             <div className={style['faq-cta']}>
                 <h3 className={style['faq-cta-title']}>Ще є питання?</h3>
                 <p className={style['faq-cta-subtitle']}>Зв'яжись з нами для детальної консультації.</p>
-                <button href='#form' className={style['faq-cta-button']}>Написати</button>
+                <a href='#form' className={style['faq-cta-button']}>Написати</a>
             </div>
         </section>
         </>

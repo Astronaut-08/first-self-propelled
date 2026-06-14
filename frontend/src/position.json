@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Водій",
+    "description": "Підвозь БК чи переганяй техніку...",
+    "value": "driver"
+  },
+  {
+    "name": "Радіотелефоніст",
+    "description": "Налаштовуй зв'язок...",
+    "value": "radiotelefonist"
+  }
+]

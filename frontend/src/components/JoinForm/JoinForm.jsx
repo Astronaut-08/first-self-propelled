@@ -1,4 +1,5 @@
 import style from './JoinForm.module.css'
+import currentPosition from '../../position.json'
 import {Formik, Form, Field, ErrorMessage} from 'formik'
 import { useState } from 'react'
 import {nanoid} from 'nanoid'
@@ -52,14 +53,24 @@ const JoinForm = ({onAddRecruit}) => {
 
                     <div className={style['field-group']}>
                         <label htmlFor='time' className={style['label']}>Коли зателефонувати?</label>
-                        <Field type='text' name='time' id='times' placeholder='01/01/2026 17:00' 
+                        <Field type='text' name='time' id='time' placeholder='01/01/2026 17:00' 
                         className={`${style['input']} ${errors.time && touched.time ? style['input-error'] : ''}`}/>
                         <ErrorMessage name='time' component='span' className={style['error']}/>
                     </div>
 
-                    <Field as='select' name='position' className={style['select']}>
-                        <option value='' disabled hidden> -- Обери посаду --</option>
-                    </Field>
+                    <div className={style['select-wrapper']}>
+                        <Field as='select' name='position' className={style['select']}>
+                            <option value='' disabled hidden> -- Обери посаду --</option>
+
+                            {currentPosition.map((pos) => {
+                                return (
+                                    <option key={pos.value} value={pos.value}>{pos.name}</option>
+                                )
+                            })}
+                        </Field>
+                    </div>
+                    
+
                     <label className={style['checkbox-label']}>
                         <Field type='checkbox' name='is_accept' className={style['checkbox']}/>
                         Чи даєте ви згоду на отримання повідомлень та обробку ваших персональних даних?

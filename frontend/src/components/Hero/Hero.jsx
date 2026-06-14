@@ -8,7 +8,7 @@ const Hero = () => {
                 <source src={video} type='video/webm'></source>
             </video>
             <h1 className={styles.title}>Зроби свій вибір сьогодні</h1>
-            <button href='#form' className={styles.button}>Долучайся</button>
+            <a href='#form' className={styles.button}>Долучайся</a>
         </div>
     )
 }

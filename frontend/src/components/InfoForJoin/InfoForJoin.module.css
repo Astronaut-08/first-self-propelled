@@ -1,0 +1,65 @@
+.recruitment-container {
+    flex: 0 0 420px;
+    padding-top: 8px;
+}
+
+.recruitment-title {
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: #111111;
+    letter-spacing: -1px;
+    margin: 0 0 28px;
+}
+
+.recruitment-description {
+    font-size: 15px;
+    font-weight: 400;
+    color: #111111;
+    line-height: 1.6;
+    margin: 0 0 36px;
+}
+
+.contact-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.contact-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: #111111;
+}
+
+.contact-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111111;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.contact-text:hover {
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .recruitment-container {
+        flex: none;
+        width: 100%;
+        padding-top: 0;
+    }
+ 
+    .recruitment-title {
+        font-size: 40px;
+        letter-spacing: -0.5px;
+        margin: 0 0 16px;
+    }
+ 
+    .recruitment-description {
+        margin: 0 0 24px;
+    }
+}

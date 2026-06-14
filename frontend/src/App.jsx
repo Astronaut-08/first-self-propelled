@@ -4,6 +4,7 @@ import Header from './components/Header/Header'
 import Hero from './components/Hero/Hero'
 import AboutUs from './components/AboutUs/AboutUs'
 import Question from './components/Question/Question'
+import JoinUs from './components/JoinUs/JoinUs'
 
 const App = () => {
   return (
@@ -19,6 +20,10 @@ const App = () => {
       </section>
 
       <Question />
+
+      <section id='form'>
+        <JoinUs />
+      </section>
     </div>
   )
 }

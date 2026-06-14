@@ -26,7 +26,7 @@ const Header = () => {
           <a href='#about' className={styles.button}>Про нас</a>
           <a href='#faq' className={styles.button}>Запитання</a>
           <button className={styles.button}>Допомогти підрозділу</button>
-          <button className={styles['add-button']}>Долучайся</button>
+          <button href='#form' className={styles['add-button']}>Долучайся</button>
         </nav>
       </header>
 
@@ -51,7 +51,7 @@ const Header = () => {
           <a href='#about' className={styles.modalLink} onClick={() => setIsMenuOpen(false)}>Про нас</a>
           <a href='#faq' className={styles.modalLink} onClick={() => setIsMenuOpen(false)}>Запитання</a>
           <button className={styles.modalLink} onClick={() => setIsMenuOpen(false)}>Допомогти підрозділу</button>
-          <button className={styles.modalAddButton} onClick={() => setIsMenuOpen(false)}>Долучайся</button>
+          <button href='#form' className={styles.modalAddButton} onClick={() => setIsMenuOpen(false)}>Долучайся</button>
         </div>
       </div>
     </>

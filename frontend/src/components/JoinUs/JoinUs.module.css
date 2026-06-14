@@ -1,0 +1,17 @@
+.join-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 80px;
+    padding: 64px 80px;
+    max-width: 1280px;
+    margin: 0 auto;
+    background-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .join-section {
+        flex-direction: column;
+        gap: 32px;
+        padding: 40px 20px;
+    }
+}

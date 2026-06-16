@@ -1,0 +1,134 @@
+.helpSection {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    font-family: system-ui, -apple-system, sans-serif; /* Або твій глобальний шрифт */
+    background-color: white
+}
+
+/* Секція заголовка */
+.headerContainer {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px 0;
+    color: #000000;
+}
+
+.subtitle {
+    font-size: 1.15rem;
+    color: #000000;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.4;
+}
+
+/* Контейнер для зображення та тексту */
+.contentContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap; /* Для адаптивності */
+}
+
+/* Обгортка зображення (сірий квадрат з макета) */
+.imageWrapper {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    aspect-ratio: 1 / 1;
+    background-color: #d9d9d9;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.helpImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Права текстова частина */
+.textContainer {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+}
+
+.contentTitle {
+    font-size: 2.2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0;
+    color: #000000;
+    letter-spacing: -0.01em;
+}
+
+.description {
+    font-size: 1.1rem;
+    color: #333333;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Посилання-стрілка */
+.link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #000000;
+    text-decoration: none;
+    margin-top: 8px;
+    width: fit-content;
+    transition: opacity 0.2s ease;
+}
+
+.link:hover {
+    opacity: 0.7;
+}
+
+.arrow {
+    font-weight: 400;
+    transition: transform 0.2s ease;
+}
+
+.link:hover .arrow {
+    transform: translateX(4px); /* Легкий інтерактивний ефект при наведенні */
+}
+
+/* Адаптивність для мобільних пристроїв */
+@media (max-width: 768px) {
+    .contentContainer {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .title {
+        font-size: 2.2rem;
+    }
+    
+    .contentTitle {
+        font-size: 1.8rem;
+    }
+    
+    .textContainer {
+        text-align: left;
+        align-items: flex-start;
+    }
+}

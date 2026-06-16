@@ -5,6 +5,7 @@ import Hero from './components/Hero/Hero'
 import AboutUs from './components/AboutUs/AboutUs'
 import Question from './components/Question/Question'
 import JoinUs from './components/JoinUs/JoinUs'
+import HelpSection from './components/HelpSection/HelpSection'
 
 const App = () => {
   return (
@@ -24,6 +25,8 @@ const App = () => {
       <section id='form'>
         <JoinUs />
       </section>
+
+      <HelpSection />
     </div>
   )
 }

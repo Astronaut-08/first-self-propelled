@@ -1,9 +1,9 @@
 import style from './JoinForm.module.css'
-import currentPosition from '../../position.json'
 import {Formik, Form, Field, ErrorMessage} from 'formik'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {nanoid} from 'nanoid'
 import * as Yup from 'yup'
+import { getVacancies } from '../../api/app-api'
 
 const Validator = Yup.object().shape({
     name: Yup.string().required(),
@@ -12,6 +12,25 @@ const Validator = Yup.object().shape({
 })
 
 const JoinForm = ({onAddRecruit}) => {
+    const [vacations, setVacations] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        const fetchVacancies = async() => {
+            try {
+                const data = await getVacancies();
+                setVacations(data);
+            }catch (e){
+                setError(e);
+            }finally{
+                setLoading(false);
+            }
+            
+        }
+        fetchVacancies()
+    }, [])
+
     return (
         <div className={style['form-wrapper']}>
             <Formik
@@ -62,9 +81,9 @@ const JoinForm = ({onAddRecruit}) => {
                         <Field as='select' name='position' className={style['select']}>
                             <option value='' disabled hidden> -- Обери посаду --</option>
 
-                            {currentPosition.map((pos) => {
+                            {vacations.map((pos) => {
                                 return (
-                                    <option key={pos.value} value={pos.value}>{pos.name}</option>
+                                    <option key={pos.id} value={pos.id}>{pos.title}</option>
                                 )
                             })}
                         </Field>
@@ -79,7 +98,6 @@ const JoinForm = ({onAddRecruit}) => {
                     <button type='submit' className={style['submit-btn']}>Надіслати</button>
                 </Form>
                 )}
-
             </Formik>
         </div>
     )

@@ -36,7 +36,7 @@ class Application(Base):
         back_populates='applications'
     )
 
-class Fundatiers(Base):
+class Fundraisers(Base):
     __tablename__ = 'fundariers'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

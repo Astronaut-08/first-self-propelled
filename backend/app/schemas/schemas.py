@@ -22,7 +22,7 @@ class ApplicationCreate(BaseModel):
     phone: str = Field(..., max_length=20, description='Номер телефону користувача')
     vacancy_id: Optional[int] = Field(None, description='Вакансія на яку подається користувач')
 
-    @field_validator(phone)
+    @field_validator('phone')
     @classmethod
     def validate_phone(cls, value: str) -> str:
         cleaned = re.sub(r'[\s\-()]', '', value)

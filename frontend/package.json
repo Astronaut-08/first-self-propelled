@@ -13,8 +13,12 @@
     "axios": "^1.18.0",
     "formik": "^2.4.9",
     "nanoid": "^5.1.11",
+    "ra-i18n-polyglot": "^5.14.7",
+    "ra-language-ukrainian": "^4.0.0",
     "react": "^19.2.6",
+    "react-admin": "^5.14.7",
     "react-dom": "^19.2.6",
+    "react-router-dom": "^7.18.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {

@@ -1,33 +1,45 @@
 import { useState } from 'react'
 import './App.css'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
 import Header from './components/Header/Header'
 import Hero from './components/Hero/Hero'
 import AboutUs from './components/AboutUs/AboutUs'
 import Question from './components/Question/Question'
 import JoinUs from './components/JoinUs/JoinUs'
 import HelpSection from './components/HelpSection/HelpSection'
+import AdminPanel from './components/AdminPanel/AdminPanel'
 
 const App = () => {
   return (
-    <div>
-      <Header />
-      
-      <section id='main'>
-        <Hero />
-      </section>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={
+          <div>
+            <Header />
+            
+            <section id='main'>
+              <Hero />
+            </section>
 
-      <section id='about'>
-        <AboutUs />
-      </section>
+            <section id='about'>
+              <AboutUs />
+            </section>
 
-      <Question />
+            <Question />
 
-      <section id='form'>
-        <JoinUs />
-      </section>
+            <section id='form'>
+              <JoinUs />
+            </section>
 
-      <HelpSection />
-    </div>
+            <HelpSection />
+          </div>
+        } />
+
+        <Route path='/admin/*' element={<AdminPanel />} />
+      </Routes>
+    </BrowserRouter>
+    
   )
 }
 

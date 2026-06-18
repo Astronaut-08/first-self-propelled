@@ -47,7 +47,12 @@ const JoinForm = ({onAddRecruit}) => {
                 onAddRecruit({id: nanoid(), ...values});
                 action.resetForm();
             }}>
-                {({errors, touched}) => (
+                {({errors, touched, values}) => {
+                    const selectedPosition = vacations.find(
+                        (pos) => String(pos.id) === String(values.position)
+                    );
+
+                    return (
                 <Form className={style['form']}>
                     <div className={style['field-group']}>
                         <label htmlFor='name' className={style['label']}>Ім’я</label>
@@ -80,15 +85,15 @@ const JoinForm = ({onAddRecruit}) => {
                     <div className={style['select-wrapper']}>
                         <Field as='select' name='position' className={style['select']}>
                             <option value='' disabled hidden> -- Обери посаду --</option>
-
-                            {vacations.map((pos) => {
-                                return (
-                                    <option key={pos.id} value={pos.id}>{pos.title}</option>
-                                )
-                            })}
+                            {vacations.map((pos) => (<option key={pos.id} value={pos.id}>{pos.title}</option>))}
                         </Field>
                     </div>
                     
+                    {selectedPosition && selectedPosition.description && (
+                        <div className={style['description-wraper']}>
+                            <p className={style['description-position']}>{selectedPosition.description}</p>
+                        </div>
+                    )}
 
                     <label className={style['checkbox-label']}>
                         <Field type='checkbox' name='is_accept' className={style['checkbox']}/>
@@ -97,7 +102,7 @@ const JoinForm = ({onAddRecruit}) => {
                     
                     <button type='submit' className={style['submit-btn']}>Надіслати</button>
                 </Form>
-                )}
+                )}}
             </Formik>
         </div>
     )

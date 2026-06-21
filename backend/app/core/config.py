@@ -16,10 +16,10 @@ class Settings(BaseSettings):
     DB_PORT: int = 3306
     DB_NAME: str
 
-    META_API_VERSION: str = "v18.0"
-    META_ACCESS_TOKEN: str
-    META_VERIFY_TOKEN: str
-    META_PHONE_NUMBER_ID: str | None = None
+    # META_API_VERSION: str = "v18.0"
+    # META_ACCESS_TOKEN: str
+    # META_VERIFY_TOKEN: str
+    # META_PHONE_NUMBER_ID: str | None = None
 
     # Конфігурація самого класу Pydantic Settings
     model_config = SettingsConfigDict(

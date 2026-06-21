@@ -39,7 +39,6 @@ const App = () => {
         <Route path='/admin/*' element={<AdminPanel />} />
       </Routes>
     </BrowserRouter>
-    
   )
 }
 

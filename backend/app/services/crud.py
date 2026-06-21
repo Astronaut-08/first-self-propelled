@@ -5,7 +5,7 @@ from app.schemas.schemas import VacancyCreate, ApplicationCreate, FundraiserCrea
 
 # --- Vacantions ---
 async def get_all_vacancies(db: AsyncSession):
-    data = await db.scalars(select(Vacancy))
+    data = await db.scalars(select(Vacancy).where(Vacancy.is_active == True))
     return data.all()
 
 async def create_vacancy(db: AsyncSession, vacancy_data: VacancyCreate):
@@ -36,5 +36,5 @@ async def create_fundraiser(db: AsyncSession, fundraiser_data: FundraiserCreate)
     return db_fundraiser
 
 async def get_fundraisers(db: AsyncSession):
-    data = await db.scalars(select(Fundraisers))
+    data = await db.scalars(select(Fundraisers).where(Fundraisers.is_active == True))
     return data.all()

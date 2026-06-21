@@ -8,7 +8,7 @@ from app.schemas.schemas import (
     ApplicationCreate, ApplicationResponceModel, 
     FundraiserResponse, FundraiserCreate
 )
-from backend.app.services import crud
+from app.services import crud
 
 router = APIRouter()
 

@@ -10,10 +10,15 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:5173'],
+    allow_origins=[ # Сюди свій продакшн домен коли деплоїм
+        'http://localhost:5173',
+        'http://localhost:4173',
+        'http://127.0.0.1:5173'
+    ],
     allow_credentials=True,
     allow_methods=['*'],
-    allow_headers=['*']
+    allow_headers=['*'],
+    expose_headers=['X-Total-Count'] #Кастомні заголовки для фронта 
 )
 
 app.include_router(router=router, prefix=settings.API_V1_STR)

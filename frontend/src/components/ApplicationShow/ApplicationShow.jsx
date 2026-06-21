@@ -8,6 +8,8 @@ const ApplicationShow = () => {
                 <DateField source='created_at' label='Дата' showTime />
                 <TextField source='name' label="Ім'я" />
                 <TextField source='phone' label='Номер телефону' />
+                <TextField source='email' label='Емейл кандидата' />
+                <TextField source='prefer_time' label="Провонований час зв'язку" />
                 <TextField source='vacancy_id' label='ID вакансії' />
             </SimpleShowLayout>
         </Show>

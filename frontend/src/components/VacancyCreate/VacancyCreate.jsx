@@ -5,7 +5,7 @@ const VacancyCreate = () => {
         <Create>
             <SimpleForm>
                 <TextInput source='title' label='Назва' fullWidth required />
-                <TextInput source='desctiption' label='Опис' fullWidth multiline rows={4} />
+                <TextInput source='description' label='Опис' fullWidth multiline rows={4} />
                 <BooleanInput source='is_active' label='Статус' defaultValue={true} />
             </SimpleForm>
         </Create>

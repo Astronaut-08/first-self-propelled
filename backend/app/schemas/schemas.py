@@ -26,7 +26,7 @@ class ApplicationCreate(BaseModel):
     name: str = Field(..., min_length=2, max_length=254, description='Ім\'я користувача')
     phone: str = Field(..., max_length=20, description='Номер телефону користувача')
     email: Optional[str] = Field(None, max_length=254, description='Емейл користувача')
-    preferred_time: Optional[str] = Field(None, max_length=100, description='Час коли можна дзвонити')
+    prefer_time: Optional[str] = Field(None, max_length=100, description='Час коли можна дзвонити')
     vacancy_id: Optional[int] = Field(None, description='Вакансія на яку подається користувач')
 
     @field_validator('phone')
@@ -45,7 +45,7 @@ class ApplicationResponce(BaseModel):
     name: str
     phone: str
     email: Optional[str]
-    preferred_time: Optional[str]
+    prefer_time: Optional[str]
     vacancy_id: Optional[int]
     created_at: datetime
 

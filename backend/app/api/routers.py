@@ -30,7 +30,7 @@ async def read_vacancies(
         for v in items
     ])
     response.headers['X-Total-Count'] = str(len(items))
-    response.headers['Access-Controll-Expose-Headers'] = 'X-Total-Count'
+    response.headers['Access-Control-Expose-Headers'] = 'X-Total-Count'
     return response
 
 @router.get('/vacancies/{vacancy_id}', response_model=VacancyResponce, tags=['Vacancies'])
@@ -54,7 +54,7 @@ async def remove_vacancy(vacancy_id: int, db=Depends(get_db)):
 # Тільки читання — дані йтимуть у WhatsApp
 # ══════════════════════════════════════════════
 
-@router.get('/application', response_model=List[ApplicationResponce], tags=['Applications'])
+@router.get('/applications', response_model=List[ApplicationResponce], tags=['Applications'])
 async def read_applications(db=Depends(get_db)):
     items = await crud.get_all_apllications(db=db)
     response = JSONResponse(content=[
@@ -65,14 +65,14 @@ async def read_applications(db=Depends(get_db)):
         } for a in items
     ])
     response.headers['X-Total-Count'] = str(len(items))
-    response.headers['Access-Controll-Expose-Headers'] = 'X-Total-Count'
+    response.headers['Access-Control-Expose-Headers'] = 'X-Total-Count'
     return response
 
-@router.get('/application/{application_id}', response_model=ApplicationResponce, tags=['Applications'])
+@router.get('/applications/{application_id}', response_model=ApplicationResponce, tags=['Applications'])
 async def read_application(application_id: int, db=Depends(get_db)):
     return await crud.get_application_by_id(application_id=application_id, db=db)
 
-@router.post('/application', response_model=ApplicationResponce, status_code=201, tags=['Applications'])
+@router.post('/applications', response_model=ApplicationResponce, status_code=201, tags=['Applications'])
 async def add_application(application: ApplicationCreate, db=Depends(get_db)):
     return await crud.create_application(db=db, application_data=application)
 
@@ -90,7 +90,7 @@ async def read_fundraisers(db=Depends(get_db), include_inactive=Query(False)):
         } for f in items
     ])
     response.headers['X-Total-Count'] = str(len(items))
-    response.headers['Access-Controll-Expose-Headers'] = 'X-Total-Count'
+    response.headers['Access-Control-Expose-Headers'] = 'X-Total-Count'
     return response
 
 @router.get('/fundraiser/{fundraiser_id}', response_model=FundraiserResponse, tags=['Fundraisers'])
@@ -122,7 +122,7 @@ async def read_questions(include_inactive: bool = Query(False), db=Depends(get_d
         } for q in items
     ])
     response.headers['X-Total-Count'] = str(len(items))
-    response.headers['Access-Controll-Expose-Headers'] = 'X-Total-Count'
+    response.headers['Access-Control-Expose-Headers'] = 'X-Total-Count'
     return response
 
 @router.get('/questions/{question_id}', response_model=QuestionResponce, tags=['Questions'])

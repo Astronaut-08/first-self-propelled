@@ -106,7 +106,7 @@ const dataProvider = {
             throw new Error(`Помилка видалення: ${responce.statusText}`)
         }
 
-        const data = responce.json()
+        const data = await responce.json()
         return {data}
     },
 

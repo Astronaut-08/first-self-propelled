@@ -6,7 +6,7 @@ import re
 # Налаштування валідації вакансій
 class VacancyBase(BaseModel):
     title: str = Field(..., min_length=3, max_length=254, description='Назва вакансії')
-    description: str = Field(None, description='Опис вакансії')
+    description: Optional[str] = Field(None, description='Опис вакансії')
     is_active: bool = Field(True, description='Чи актуальна вакансія в даний момент')
 
 class VacancyCreate(VacancyBase):

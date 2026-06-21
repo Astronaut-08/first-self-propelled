@@ -6,9 +6,20 @@ import * as Yup from 'yup'
 import { getVacancies } from '../../api/app-api'
 
 const Validator = Yup.object().shape({
-    name: Yup.string().required(),
-    number: Yup.string().required(),
-    email: Yup.string().required()
+    name: Yup.string()
+        .min(2, "Ім'я має містити щонайменше 2 символи")
+        .max(50, "Ім'я занадто довге")
+        .required("Введіть ваше ім'я"),
+    number: Yup.string()
+        .matches(/^\+?\d{10,15}$/, 'Введіть дійсний номер телефону')
+        .required('Введіть номер телефону'),
+    email: Yup.string()
+        .email('Невійрний формат електронної адреси')
+        .required('Введіть ваш email'),
+    time: Yup.string().nullable(),
+    is_accept: Yup.boolean()
+        .oneOf([true], 'Ви повинні погодитись з умовами')
+        .required("Ця умова обо'язкова")
 })
 
 const JoinForm = ({onAddRecruit}) => {

@@ -1,10 +1,28 @@
 import style from './Question.module.css'
 import QuestionBlock from '../QuestionBlock/QuestionBlock'
-import faqs from '../../faqs.json'
+import { useState, useEffect } from 'react'
+import { getQuestions } from '../../api/app-api'
 
 const Question = () => {
+    const [faqs, setFaqs] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchQuestions = async () => {
+            try {
+                const data = await getQuestions()
+                setFaqs(data)
+            } catch (e) {
+                console.error('Не вдалося завантажити запитання', e)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchQuestions()
+    }, [])
+
+
     return (
-        <>
         <section className={style['faq-page']} id='faq'>
             <div className={style['faq-header']}>
                 <h2 className={style['faq-main-title']}>Запитання</h2>
@@ -12,7 +30,7 @@ const Question = () => {
             </div>
             
             <div className={style['faq-list-wrapper']}>
-                <QuestionBlock faq={faqs}/>
+                {loading ? <p className={style['loading']}>Завантаження...</p> : <QuestionBlock faq={faqs}/>}
             </div>
             
             <div className={style['faq-cta']}>
@@ -21,7 +39,6 @@ const Question = () => {
                 <a href='#form' className={style['faq-cta-button']}>Написати</a>
             </div>
         </section>
-        </>
     )
 }
 

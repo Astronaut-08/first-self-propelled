@@ -24,6 +24,8 @@ class Application(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(254), nullable=False)
     phone: Mapped[str] = mapped_column(String(20), nullable=False)
+    email: Mapped[str] = mapped_column(String(254), nullable=True)
+    prefer_time: Mapped[str] = mapped_column(String(100), nullable=True)
 
     vacancy_id: Mapped[Optional[int]] = mapped_column(
         ForeignKey('vacancies.id', ondelete='SET NULL'),

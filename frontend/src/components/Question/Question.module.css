@@ -82,6 +82,10 @@
     border-color: #ffffff;
 }
 
+.loading {
+    text-align: center;
+}
+
 /* --- АДАПТИВНІСТЬ ДЛЯ МОБІЛЬНИХ --- */
 @media (max-width: 768px) {
     .faq-page {

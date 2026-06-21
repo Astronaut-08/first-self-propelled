@@ -36,7 +36,7 @@ class Application(Base):
         back_populates='applications'
     )
 
-class Fundraisers(Base):
+class Fundraiser(Base):
     __tablename__ = 'fundariers'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -45,3 +45,12 @@ class Fundraisers(Base):
     jar_url: Mapped[str] = mapped_column(String(254), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     is_active: Mapped[bool] = mapped_column(default=True)
+
+class Question(Base):
+    __tablename__ = 'questions'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    question: Mapped[str] = mapped_column(String(254), nullable=False)
+    answer: Mapped[str] = mapped_column(Text, nullable=False)
+    is_active: Mapped[bool] = mapped_column(default=True)
+    order: Mapped[int] = mapped_column(default=0)

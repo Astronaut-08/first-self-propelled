@@ -1,40 +1,138 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from app.models.models import Vacancy, Application, Fundraisers
-from app.schemas.schemas import VacancyCreate, ApplicationCreate, FundraiserCreate
+from fastapi import HTTPException, status
+
+from app.models.models import Vacancy, Application, Fundraiser, Question
+from app.schemas.schemas import (
+    VacancyCreate, VacancyUpdate,
+    ApplicationCreate,
+    FundraiserCreate, FundraiserUpdate,
+    QuestionCreate, QuestionUpdate
+)
 
 # --- Vacantions ---
-async def get_all_vacancies(db: AsyncSession):
-    data = await db.scalars(select(Vacancy).where(Vacancy.is_active == True))
+async def get_all_vacancies(db: AsyncSession, include_inactive: bool = False):
+    query = select(Vacancy)
+    if not include_inactive: # В адмінці треба показувати і не активні вакансії
+        query = query.where(Vacancy.is_active == True)
+    data = await db.scalars(query)
     return data.all()
 
-async def create_vacancy(db: AsyncSession, vacancy_data: VacancyCreate):
-    db_vacancy = await Vacancy(**vacancy_data.model_dump())
+async def get_vacancy_by_id(db: AsyncSession, vacancy_id: int) -> Vacancy:
+    vacancy = await db.get(Vacancy, vacancy_id)
+    if not vacancy:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Вакансію не знайдено')
+    return vacancy
+
+async def create_vacancy(db: AsyncSession, vacancy_data: VacancyCreate) -> Vacancy:
+    db_vacancy = Vacancy(**vacancy_data.model_dump())
     db.add(db_vacancy)
-    db.commit()
-    db.refresh(db_vacancy)
+    await db.commit()
+    await db.refresh(db_vacancy)
     return db_vacancy
 
-# --- Applying ---
-async def create_applying(db: AsyncSession, application_data: ApplicationCreate):
-    db_applying = await Application(**application_data.model_dump())
-    db.add(db_applying)
-    db.commit()
-    db.refresh(db_applying)
-    return db_applying
+async def update_vacancy(db: AsyncSession, vacancy_id: int, vacancy_data: VacancyUpdate) -> Vacancy:
+    vacancy = await get_vacancy_by_id(db=db, vacancy_id=vacancy_id)
+    update_data = vacancy_data.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(vacancy, field, value)
+    await db.commit()
+    await db.refresh(vacancy)
+    return vacancy
 
-async def get_applying(db: AsyncSession):
+async def delete_vacancy(db: AsyncSession, vacancy_id: int) -> Vacancy:
+    vacancy = await get_vacancy_by_id(db=db, vacancy_id=vacancy_id)
+    await db.delete(vacancy)
+    await db.commit()
+    return vacancy
+
+# --- Applying ---
+async def get_all_apllications(db: AsyncSession):
     data = await db.scalars(select(Application))
     return data.all()
 
+async def get_application_by_id(db: AsyncSession, application_id: int) -> Application:
+    application = await db.get(Application, application_id)
+    if not application:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Заявку не знайдено')
+    return application
+
+async def create_application(db: AsyncSession, application_data: ApplicationCreate) -> Application:
+    db_application = Application(**application_data.model_dump())
+    db.add(db_application)
+    await db.commit()
+    await db.refresh(db_application)
+    return db_application
+
 # --- Fundraisers ---
-async def create_fundraiser(db: AsyncSession, fundraiser_data: FundraiserCreate):
-    db_fundraiser = await Fundraisers(**fundraiser_data.model_dump())
+async def get_all_fundraisers(db: AsyncSession, include_inactive: bool = False):
+    query = select(Fundraiser)
+    if not include_inactive:
+        query = query.where(Fundraiser.is_active == True)
+    data = await db.scalars(query)
+    return data.all()
+
+async def get_fundraiser_by_id(db: AsyncSession, fundraiser_id: int) -> Fundraiser:
+    fundraiser = await db.get(Fundraiser, fundraiser_id)
+    if not fundraiser:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Збір не знайдено')
+    return fundraiser
+
+async def create_fundraiser(db: AsyncSession, fundraiser_data: FundraiserCreate) -> Fundraiser:
+    db_fundraiser = Fundraiser(**fundraiser_data.model_dump())
     db.add(db_fundraiser)
-    db.commit()
-    db.refresh(db_fundraiser)
+    await db.commit()
+    await db.refresh(db_fundraiser)
     return db_fundraiser
 
-async def get_fundraisers(db: AsyncSession):
-    data = await db.scalars(select(Fundraisers).where(Fundraisers.is_active == True))
+async def update_fundraiser(db: AsyncSession, fundraiser_id: int, fundraiser_data: FundraiserUpdate) -> Fundraiser:
+    fundraiser = await get_fundraiser_by_id(db=db, fundraiser_id=fundraiser_id)
+    update_data = fundraiser_data.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(fundraiser, field, value)
+    await db.commit()
+    await db.refresh(fundraiser)
+    return fundraiser
+
+async def delete_fundraiser(db: AsyncSession, fundraiser_id: int) -> Fundraiser:
+    fundraiser = await get_fundraiser_by_id(db=db, fundraiser_id=fundraiser_id)
+    await db.delete(fundraiser)
+    await db.commit()
+    return fundraiser
+
+# --- FAQ ---
+async def get_all_questions(db: AsyncSession, include_inactive: bool = False):
+    query = select(Question)
+    if not include_inactive:
+        query = query.where(Question.is_active == True)
+    query = query.order_by(Question.order.asc(), Question.id.asc())
+    data = await db.scalars(query)
     return data.all()
+
+async def get_question_by_id(db: AsyncSession, question_id: int) -> Question:
+    question = await db.get(Question, question_id)
+    if not question:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Питання не знайдено')
+    return question
+
+async def create_question(db: AsyncSession, question_data: QuestionCreate) -> Question:
+    db_question = Question(**question_data.model_dump())
+    db.add(db_question)
+    await db.commit()
+    await db.refresh(db_question)
+    return db_question
+
+async def update_question(db: AsyncSession, question_id: int, question_data: QuestionUpdate) -> Question:
+    question = await get_question_by_id(db=db, question_id=question_id)
+    update_data = question_data.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(question, field, value)
+    await db.commit()
+    await db.refresh(question)
+    return question
+
+async def delete_question(db: AsyncSession, question_id: int) -> Question:
+    question = await get_question_by_id(db=db, question_id=question_id)
+    await db.delete(question)
+    await db.commit()
+    return question

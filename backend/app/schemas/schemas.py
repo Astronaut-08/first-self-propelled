@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 from pydantic import BaseModel, Field, ConfigDict, HttpUrl, field_validator
 from datetime import datetime
 import re
@@ -11,6 +11,11 @@ class VacancyBase(BaseModel):
 
 class VacancyCreate(VacancyBase):
     pass
+
+class VacancyUpdate(BaseModel):
+    title: Optional[str] = Field(None, min_length=3, max_length=254)
+    description: Optional[str] = None
+    is_active: Optional[bool] = None
 
 class VacancyResponce(VacancyBase):
     id: int
@@ -33,7 +38,7 @@ class ApplicationCreate(BaseModel):
         
         return cleaned
     
-class ApplicationResponceModel(BaseModel):
+class ApplicationResponce(BaseModel):
     id: int
     name: str
     phone: str
@@ -58,8 +63,35 @@ class FundraiserCreate(FundraiserBase):
     def serializa_url(cls, value: HttpUrl) -> str:
         return str(value)
     
+class FundraiserUpdate(BaseModel):
+    title: Optional[str] = Field(None, min_length=5, max_length=254)
+    target_amount: Optional[int] = Field(None, ge=0)
+    jar_url: Optional[str] = None
+    description: Optional[str] = None
+    is_active: Optional[bool] = None
+    
 class FundraiserResponse(FundraiserBase):
     id: int
     jar_url: str
 
+    model_config = ConfigDict(from_attributes=True)
+
+# FAQ Опрацювання
+class QuestionBase(BaseModel):
+    question: str = Field(..., min_length=5, max_length=254)
+    answer: str = Field(..., min_length=5)
+    is_active: bool = Field(True)
+    order: int = Field(0, ge=0)
+
+class QuestionCreate(QuestionBase):
+    pass
+
+class QuestionUpdate(BaseModel):
+    question: Optional[str] = Field(None, min_length=5, max_length=254)
+    answer: Optional[str] = Field(None, min_length=5)
+    is_active: Optional[bool] = None
+    order: Optional[int] = Field(None, ge=0)
+
+class QuestionResponce(QuestionBase):
+    id: int
     model_config = ConfigDict(from_attributes=True)

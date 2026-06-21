@@ -32,8 +32,8 @@ class Settings(BaseSettings):
     def DATABASE_URL(self) -> str:
         encoder_password = quote_plus(self.DB_PASSWORD)
         return (
-            f'mysql+aiomysql://{self.DB_USER}:{encoder_password}'
-            f'@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
+            f'mysql+pymysql://{self.DB_USER}:{encoder_password}'
+            f'@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?ssl_ca=/etc/ssl/certs/ca-certificates.crt&ssl_verify_cert=true&ssl_verify_identity=true'
         )
 
 settings = Settings()

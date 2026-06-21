@@ -1,12 +1,16 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 from app.core.config import settings
+import ssl
+
+ssl_context = ssl.create_default_context()
 
 
 engine = create_async_engine(
     str(settings.DATABASE_URL),
     echo=True,
-    pool_pre_ping=True
+    pool_pre_ping=True,
+    connect_args={'ssl': ssl_context}
 )
 
 AsyncSessionLocal = async_sessionmaker(

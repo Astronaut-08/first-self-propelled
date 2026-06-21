@@ -6,7 +6,7 @@
  * Ми транслюємо їх у звичайні fetch запити до /api/v1/...
  */
 
-const API_URL = 'http://127.0.0.1:8000/api/v1'
+const API_URL = `${import.meta.env.VITE_API_URL}/api/v1`
 
 const ADMIN_RESOURCES = ['vacancies', 'questions', 'fundraiser']
 

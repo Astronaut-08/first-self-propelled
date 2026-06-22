@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from fastapi import HTTPException, status
 
 from app.models.models import Vacancy, Application, Fundraiser, Question
@@ -52,7 +53,7 @@ async def get_all_apllications(db: AsyncSession):
     return data.all()
 
 async def get_application_by_id(db: AsyncSession, application_id: int) -> Application:
-    application = await db.get(Application, application_id)
+    application = await db.get(Application, application_id, options=[selectinload(Application.vacancy)])
     if not application:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Заявку не знайдено')
     return application

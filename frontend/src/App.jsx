@@ -9,6 +9,8 @@ import Question from './components/Question/Question'
 import JoinUs from './components/JoinUs/JoinUs'
 import HelpSection from './components/HelpSection/HelpSection'
 import AdminPanel from './components/AdminPanel/AdminPanel'
+import Footer from './components/Footer/Footer'
+import Toaster from 'react-hot-toast'
 
 const App = () => {
   return (
@@ -16,6 +18,10 @@ const App = () => {
       <Routes>
         <Route path='/' element={
           <div>
+            <div><Toaster 
+            position='top-center'
+            reverseOrder={false}/></div>
+
             <Header />
             
             <section id='main'>
@@ -33,6 +39,8 @@ const App = () => {
             </section>
 
             <HelpSection />
+
+            <Footer />
           </div>
         } />
 

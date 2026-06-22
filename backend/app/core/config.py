@@ -1,5 +1,4 @@
 from pathlib import Path
-from pydantic import EmailStr, MySQLDsn, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from urllib.parse import quote_plus
 

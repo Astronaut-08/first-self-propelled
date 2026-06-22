@@ -10,7 +10,7 @@ engine = create_async_engine(
     str(settings.DATABASE_URL),
     echo=True,
     pool_pre_ping=True,
-    connect_args={'ssl': ssl_context}
+    connect_args={'ssl': ssl_context} # False при розробці /// ssl_context при деплої
 )
 
 AsyncSessionLocal = async_sessionmaker(

@@ -1,9 +1,10 @@
 import style from './JoinForm.module.css'
 import {Formik, Form, Field, ErrorMessage} from 'formik'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import {nanoid} from 'nanoid'
 import * as Yup from 'yup'
-import { getVacancies } from '../../api/app-api'
+import { getVacancies, submitApplication } from '../../api/app-api'
+import toast from 'react-hot-toast'
 
 const Validator = Yup.object().shape({
     name: Yup.string()
@@ -22,7 +23,7 @@ const Validator = Yup.object().shape({
         .required("Ця умова обо'язкова")
 })
 
-const JoinForm = ({onAddRecruit}) => {
+const JoinForm = () => {
     const [vacations, setVacations] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -41,6 +42,22 @@ const JoinForm = ({onAddRecruit}) => {
         }
         fetchVacancies()
     }, [])
+    
+    const handleSubmit = async (value, action) => {
+        try {
+            await submitApplication({
+                name: value.name,
+                phone: value.number,
+                email: value.email,
+                prefer_time: value.time,
+                vacancy_id: value.position ? Number(value.position) : null
+            })
+            toast.success('Дані успішно відправлено! Очікуйте дзвінка!')
+        } catch (e) {
+            console.error(e)
+            toast.error('Щось пішло не так...')
+        }
+    }
 
     return (
         <div className={style['form-wrapper']}>
@@ -55,7 +72,7 @@ const JoinForm = ({onAddRecruit}) => {
             }}
             validationSchema={Validator}
             onSubmit={(values, action) => {
-                onAddRecruit({id: nanoid(), ...values});
+                handleSubmit({id: nanoid(), ...values});
                 action.resetForm();
             }}>
                 {({errors, touched, values}) => {

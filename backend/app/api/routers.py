@@ -1,17 +1,24 @@
 from typing import List
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
 from app.schemas.schemas import (
     VacancyResponce, VacancyCreate, VacancyUpdate,
     ApplicationCreate, ApplicationResponce,
     FundraiserResponse, FundraiserCreate, FundraiserUpdate,
-    QuestionResponce, QuestionCreate, QuestionUpdate
+    QuestionResponce, QuestionCreate, QuestionUpdate,
+    AdminLogin, Token, AdminResponse
 )
 from app.services import crud
+from app.services.auth import login_admin, get_current_admin
 
 router = APIRouter()
+
+# OAuth2 scheme для документації та автоматизації
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/api/v1/auth/login')
 
 # ══════════════════════════════════════════════
 # VACANCIES
@@ -38,15 +45,31 @@ async def read_vacancy(vacancy_id: int, db=Depends(get_db)):
     return await crud.get_vacancy_by_id(db=db, vacancy_id=vacancy_id)
 
 @router.post('/vacancies', response_model=VacancyResponce, status_code=201, tags=['Vacancies'])
-async def add_vacancy(vacancy: VacancyCreate, db=Depends(get_db)):
+async def add_vacancy(
+    vacancy: VacancyCreate,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    admin = await get_current_admin(db, token)
     return await crud.create_vacancy(db=db, vacancy_data=vacancy)
 
 @router.put('/vacancies/{vacancy_id}', response_model=VacancyResponce, tags=['Vacancies'])
-async def edit_vacancy(vacancy_id: int, vacancy: VacancyUpdate, db=Depends(get_db)):
+async def edit_vacancy(
+    vacancy_id: int,
+    vacancy: VacancyUpdate,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    admin = await get_current_admin(db, token)
     return await crud.update_vacancy(db=db, vacancy_id=vacancy_id, vacancy_data=vacancy)
 
 @router.delete('/vacancies/{vacancy_id}', response_model=VacancyResponce, tags=['Vacancies'])
-async def remove_vacancy(vacancy_id: int, db=Depends(get_db)):
+async def remove_vacancy(
+    vacancy_id: int,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    admin = await get_current_admin(db, token)
     return await crud.delete_vacancy(db=db, vacancy_id=vacancy_id)
 
 # ══════════════════════════════════════════════
@@ -98,15 +121,31 @@ async def read_fundraiser(fundraiser_id: int, db=Depends(get_db)):
     return await crud.get_fundraiser_by_id(db=db, fundraiser_id=fundraiser_id)
 
 @router.post('/fundraiser', response_model=FundraiserResponse, status_code=201,  tags=['Fundraisers'])
-async def add_fundraiser(fundraiser: FundraiserCreate, db=Depends(get_db)):
+async def add_fundraiser(
+    fundraiser: FundraiserCreate,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    admin = await get_current_admin(db, token)
     return await crud.create_fundraiser(db=db, fundraiser_data=fundraiser)
 
 @router.put('/fundraiser/{fundraiser_id}', response_model=FundraiserResponse, tags=['Fundraisers'])
-async def edit_fundraiser(fundraiser_id: int, fundraiser: FundraiserUpdate, db=Depends(get_db)):
+async def edit_fundraiser(
+    fundraiser_id: int,
+    fundraiser: FundraiserUpdate,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    admin = await get_current_admin(db, token)
     return await crud.update_fundraiser(db=db, fundraiser_id=fundraiser_id, fundraiser_data=fundraiser)
 
 @router.delete('/fundraiser/{fundraiser_id}', response_model=FundraiserResponse, tags=['Fundraisers'])
-async def remove_fundraiser(fundraiser_id: int, db=Depends(get_db)):
+async def remove_fundraiser(
+    fundraiser_id: int,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    admin = await get_current_admin(db, token)
     return await crud.delete_fundraiser(db=db, fundraiser_id=fundraiser_id)
 
 # ══════════════════════════════════════════════
@@ -130,13 +169,51 @@ async def read_question(question_id: int, db=Depends(get_db)):
     return await crud.get_question_by_id(db=db, question_id=question_id)
 
 @router.post('/questions', response_model=QuestionResponce, status_code=201, tags=['Questions'])
-async def add_question(question: QuestionCreate, db=Depends(get_db)):
+async def add_question(
+    question: QuestionCreate,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    admin = await get_current_admin(db, token)
     return await crud.create_question(db=db, question_data=question)
 
 @router.put('/questions/{question_id}', response_model=QuestionResponce, tags=['Questions'])
-async def edit_question(question_id: int, question: QuestionUpdate, db=Depends(get_db)):
+async def edit_question(
+    question_id: int,
+    question: QuestionUpdate,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    admin = await get_current_admin(db, token)
     return await crud.update_question(db=db, question_id=question_id, question_data=question)
 
 @router.delete('/questions/{question_id}', response_model=QuestionResponce, tags=['Questions'])
-async def remove_question(question_id: int, db=Depends(get_db)):
+async def remove_question(
+    question_id: int,
+    db: AsyncSession = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
+    admin = await get_current_admin(db, token)
     return await crud.delete_question(db=db, question_id=question_id)
+
+# ══════════════════════════════════════════════
+# AUTH (адмін панель)
+# ══════════════════════════════════════════════
+
+@router.post('/auth/login', response_model=Token, status_code=200, tags=['Auth'])
+async def login(credentials: AdminLogin, db: AsyncSession = Depends(get_db)):
+    """Логін адміна та отримання JWT токена"""
+    return await login_admin(db, credentials)
+
+
+@router.post('/auth/verify', response_model=AdminResponse, status_code=200, tags=['Auth'])
+async def verify(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
+    """Перевірка токена та отримання даних адміна"""
+    return await get_current_admin(db, token)
+
+
+@router.get('/auth/me', response_model=AdminResponse, status_code=200, tags=['Auth'])
+async def get_me(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
+    """Отримати поточного адміна"""
+    return await get_current_admin(db, token)
+

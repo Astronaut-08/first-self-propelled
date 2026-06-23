@@ -15,6 +15,11 @@ class Settings(BaseSettings):
     DB_PORT: int = 3306
     DB_NAME: str
 
+    # JWT CONFIG
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+
     # META_API_VERSION: str = "v18.0"
     # META_ACCESS_TOKEN: str
     # META_VERIFY_TOKEN: str

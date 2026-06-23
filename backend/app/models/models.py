@@ -56,3 +56,12 @@ class Question(Base):
     answer: Mapped[str] = mapped_column(Text, nullable=False)
     is_active: Mapped[bool] = mapped_column(default=True)
     order: Mapped[int] = mapped_column(default=0)
+
+class Admin(Base):
+    __tablename__ = 'admins'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    username: Mapped[str] = mapped_column(String(254), unique=True, nullable=False, index=True)
+    hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
+    is_active: Mapped[bool] = mapped_column(default=True)
+    created_at: Mapped[datetime] = mapped_column(default=func.now())

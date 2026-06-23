@@ -99,3 +99,30 @@ class QuestionUpdate(BaseModel):
 class QuestionResponce(QuestionBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
+
+
+# ══════════════════════════════════════════════
+# AUTH SCHEMAS
+# ══════════════════════════════════════════════
+
+class AdminLogin(BaseModel):
+    username: str = Field(..., min_length=3, max_length=254, description='Ім\'я адміна')
+    password: str = Field(..., min_length=6, description='Пароль')
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = 'bearer'
+    expires_in: int  # TTL у секундах
+
+
+class TokenData(BaseModel):
+    username: str
+
+
+class AdminResponse(BaseModel):
+    id: int
+    username: str
+    is_active: bool
+
+    model_config = ConfigDict(from_attributes=True)

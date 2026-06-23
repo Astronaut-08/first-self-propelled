@@ -18,9 +18,6 @@ const App = () => {
       <Routes>
         <Route path='/' element={
           <div>
-            <div><Toaster 
-            position='top-center'
-            reverseOrder={false}/></div>
 
             <Header />
             

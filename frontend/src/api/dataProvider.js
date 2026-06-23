@@ -7,12 +7,24 @@
  */
 
 // При пуші розкоментувати
-const API_URL = `${import.meta.env.VITE_API_URL}/api/v1`
+// const API_URL = `${import.meta.env.VITE_API_URL}/api/v1`
 
 // При розробці розкоментувати
-// const API_URL = `http://127.0.0.1:8000/api/v1`
+const API_URL = `http://127.0.0.1:8000/api/v1`
 
 const ADMIN_RESOURCES = ['vacancies', 'questions', 'fundraiser']
+
+/**
+ * Отримує JWT токен із localStorage
+ */
+const getAuthHeaders = () => {
+    const token = localStorage.getItem('token')
+    const headers = { 'Content-Type': 'application/json' }
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+    }
+    return headers
+}
 
 const dataProvider = {
     // ──────────────────────────────────────────
@@ -66,7 +78,7 @@ const dataProvider = {
     create: async (resource, param) => {
         const responce = await fetch(`${API_URL}/${resource}`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: getAuthHeaders(),
             body: JSON.stringify(param.data)
         })
 
@@ -85,7 +97,7 @@ const dataProvider = {
     update: async (resource, param) => {
         const responce = await fetch(`${API_URL}/${resource}/${param.id}`, {
             method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
+            headers: getAuthHeaders(),
             body: JSON.stringify(param.data)
         })
 
@@ -103,7 +115,8 @@ const dataProvider = {
     // ──────────────────────────────────────────
     delete: async (resource, param) => {
         const responce = await fetch(`${API_URL}/${resource}/${param.id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeaders()
         })
 
         if (!responce.ok) {
@@ -118,7 +131,11 @@ const dataProvider = {
     // DELETE MANY  →  кілька DELETE (масове видалення)
     // ──────────────────────────────────────────
     deleteMany: async (resource, param) => {
-        const promises = param.ids.map((id) => fetch(`${API_URL}/${resource}/${id}`, {method: 'DELETE'}))
+        const headers = getAuthHeaders()
+        const promises = param.ids.map((id) => fetch(`${API_URL}/${resource}/${id}`, {
+            method: 'DELETE',
+            headers
+        }))
         await Promise.all(promises)
         return {data: param.ids}
     },

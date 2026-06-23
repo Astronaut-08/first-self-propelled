@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // при пуші розкоментувати
-axios.defaults.baseURL = import.meta.env.VITE_API_URL
+axios.defaults.baseURL = `${import.meta.env.VITE_API_URL}/api/v1`
 
 // При розробці розкоментувати 
 // axios.defaults.baseURL = 'http://127.0.0.1:8000/api/v1'

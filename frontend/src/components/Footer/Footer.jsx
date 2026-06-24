@@ -9,11 +9,11 @@ const Footer = () => {
                     <a href='#main'><img src={logo} alt='logo' className={style['logo']}/></a>
                     <div className={style['contact-wrapper']}>
                         <h4 className={style['contact-title']}>Контакти</h4>
-                        <a className={style['contanct-link']}>
+                        <a className={style['contanct-link']} href='tel: +380000000000'>
                             <svg className={style['contact-icon']} viewBox='0 0 32 32'><use href='/icons.svg#phone' /></svg>
                             +380 00 000 00 00
                         </a>
-                        <a className={style['contanct-link']}>
+                        <a className={style['contanct-link']} href='mailto: example@gmail.com'>
                             <svg className={style['contact-icon']} viewBox='0 0 32 32'><use href='/icons.svg#mail' /></svg>
                             example@gmail.com
                         </a>

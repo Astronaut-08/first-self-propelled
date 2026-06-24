@@ -17,7 +17,7 @@ const HelpSection = ({actualHelp}) => {
                 console.log(e)
             }
         }
-    })
+    }, [])
 
     return (
         <section id='help' className={style['helpSection']}>

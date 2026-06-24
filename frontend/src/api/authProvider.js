@@ -2,6 +2,26 @@ import apiUrl from './app-api'
 
 const API_URL = apiUrl()
 
+const decodeJwtPayload = (token) => {
+    if (!token) return null
+    const parts = token.split('.')
+    if (parts.length !== 3) return null
+
+    try {
+        const payload = atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'))
+        return JSON.parse(decodeURIComponent(escape(payload)))
+    } catch {
+        return null
+    }
+}
+
+const isTokenExpired = (token) => {
+    const payload = decodeJwtPayload(token)
+    if (!payload || !payload.exp) return true
+
+    return Math.floor(Date.now() / 1000) >= payload.exp
+}
+
 const authProvider = {
     /**
      * Перевіряє, чи користувач залогінений
@@ -32,11 +52,17 @@ const authProvider = {
      */
     checkAuth: async () => {
         const token = localStorage.getItem('token')
-        if (token) {
-            return Promise.resolve()
+        if (!token) {
+            return Promise.reject({ message: 'Потрібна авторизація' })
         }
 
-        return Promise.reject({message: 'Потрібна авторизація'})
+        if (isTokenExpired(token)) {
+            localStorage.removeItem('token')
+            localStorage.removeItem('token_expires_in')
+            return Promise.reject({ message: 'Токен вийшов із ладу' })
+        }
+
+        return Promise.resolve()
     },
 
     /**

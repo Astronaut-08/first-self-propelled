@@ -32,7 +32,9 @@ const dataProvider = {
         const isAdminResource = ADMIN_RESOURCES.includes(resource)
         const query = isAdminResource ? '?include_inactive=true' : ''
 
-        const responce = await fetch(`${API_URL}/${resource}${query}`)
+        const responce = await fetch(`${API_URL}/${resource}${query}`, {
+            headers: getAuthHeaders()
+        })
 
         if (!responce.ok) {
             throw new Error(`Помилка отримання списку: ${responce.statusText}`)
@@ -48,7 +50,9 @@ const dataProvider = {
     // GET ONE  →  GET /resource/{id}
     // ──────────────────────────────────────────
     getOne: async (resource, param) => {
-        const responce = await fetch(`${API_URL}/${resource}/${param.id}`)
+        const responce = await fetch(`${API_URL}/${resource}/${param.id}`, {
+            headers: getAuthHeaders()
+        })
 
         if (!responce.ok) {
             throw new Error(`Запис не знайдено: ${responce.statusText}`)

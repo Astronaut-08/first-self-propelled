@@ -116,7 +116,7 @@ const JoinForm = () => {
                             {vacations.map((pos) => (<option key={pos.id} value={pos.id}>{pos.title}</option>))}
                         </Field>
                     </div>
-                    
+
                     {selectedPosition && selectedPosition.description && (
                         <div className={style['description-wraper']}>
                             <p className={style['description-position']}>{selectedPosition.description}</p>
@@ -127,6 +127,7 @@ const JoinForm = () => {
                         <Field type='checkbox' name='is_accept' className={style['checkbox']}/>
                         Чи даєте ви згоду на отримання повідомлень та обробку ваших персональних даних?
                     </label>
+                    <ErrorMessage name='is_accept' component='span' className={style['error']} />
                     
                     <button type='submit' className={style['submit-btn']}>Надіслати</button>
                 </Form>

@@ -1,11 +1,12 @@
 import styles from './Hero.module.css'
 import video from '../../assets/backgroundvideo.webm'
+import posterIng from '../../assets/background.webp'
 
 const Hero = () => {
     return (
         <div className={styles.hero}>
             <video autoPlay loop muted playsInline
-            poster='../../assets/background.webp'
+            poster={posterIng}
             className={styles.videoBackground}>
                 <source src={video} type='video/webm'></source>
             </video>

@@ -26,6 +26,8 @@ export const getFundraisers = async () => {
     return data
 }
 
-export const apiUrl = async () => {
+const apiUrl = async () => {
     return axios.defaults.baseURL
 }
+
+export default apiUrl

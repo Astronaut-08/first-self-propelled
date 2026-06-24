@@ -264,12 +264,26 @@ h1, h2, h3, h4 {
 /* ==========================================================================
    RESPONSIVE (Адаптивність під мобільні)
    ========================================================================== */
-@media (max-width: 768px) {
-  .content-grid, .form-grid {
-    grid-template-columns: 1fr;
+@media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
+  .content-grid,
+  .form-grid,
+  .cards-grid,
+  .content-row {
+    width: 100%;
     gap: 30px;
   }
-  
+
+  .content-grid,
+  .form-grid,
+  .cards-grid {
+    display: grid;
+  }
+
+  .content-row {
+    display: flex;
+    flex-direction: column;
+  }
+
   .section-title {
     font-size: 2rem;
   }

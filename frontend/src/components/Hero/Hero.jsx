@@ -4,7 +4,9 @@ import video from '../../assets/backgroundvideo.webm'
 const Hero = () => {
     return (
         <div className={styles.hero}>
-            <video autoPlay loop muted playsInline className={styles.videoBackground}>
+            <video autoPlay loop muted playsInline
+            poster='../../assets/background.webp'
+            className={styles.videoBackground}>
                 <source src={video} type='video/webm'></source>
             </video>
             <h1 className={styles.title}>Зроби свій вибір сьогодні</h1>

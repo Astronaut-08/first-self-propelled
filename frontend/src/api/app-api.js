@@ -21,6 +21,11 @@ export const submitApplication = async (applicationData) => {
     return data
 } 
 
+export const getFundraisers = async () => {
+    const {data} = await axios.get('/fundraiser')
+    return data
+}
+
 export const apiUrl = async () => {
     return axios.defaults.baseURL
 }

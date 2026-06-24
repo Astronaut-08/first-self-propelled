@@ -6,11 +6,9 @@
  * Ми транслюємо їх у звичайні fetch запити до /api/v1/...
  */
 
-// При пуші розкоментувати
-const API_URL = `${import.meta.env.VITE_API_URL}/api/v1`
+import apiUrl from './app-api'
 
-// При розробці розкоментувати
-// const API_URL = `http://127.0.0.1:8000/api/v1`
+const API_URL = apiUrl()
 
 const ADMIN_RESOURCES = ['vacancies', 'questions', 'fundraiser']
 

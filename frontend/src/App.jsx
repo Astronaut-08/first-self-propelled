@@ -1,47 +1,20 @@
-import { useState } from 'react'
 import './App.css'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import MainPage from './pages/MainPage/MainPage'
+import { lazy, Suspense } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import Header from './components/Header/Header'
-import Hero from './components/Hero/Hero'
-import AboutUs from './components/AboutUs/AboutUs'
-import Question from './components/Question/Question'
-import JoinUs from './components/JoinUs/JoinUs'
-import HelpSection from './components/HelpSection/HelpSection'
-import AdminPanel from './components/AdminPanel/AdminPanel'
-import Footer from './components/Footer/Footer'
-import Toaster from 'react-hot-toast'
+const AdminPanel = lazy(() => import('./pages/AdminPanel/AdminPanel'))
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={
-          <div>
-
-            <Header />
-            
-            <section id='main'>
-              <Hero />
-            </section>
-
-            <section id='about'>
-              <AboutUs />
-            </section>
-
-            <Question />
-
-            <section id='form'>
-              <JoinUs />
-            </section>
-
-            <HelpSection />
-
-            <Footer />
-          </div>
+        <Route path='/' element={<MainPage />} />
+        <Route path='/admin/*' element={
+          <Suspense fallback={<div style={{padding: '2rem', color: '#fff'}}>Завантаження...</div>}>
+            <AdminPanel />
+          </Suspense>
         } />
-
-        <Route path='/admin/*' element={<AdminPanel />} />
       </Routes>
     </BrowserRouter>
   )

@@ -12,11 +12,11 @@ const AboutUs = () => {
                 className={style['content-text-container']}
                 titleText={'СВОБОДА ВИБУДОВУЄТЬСЯ КОЖЕН ДЕНЬ'} 
                 descriptionText={'Підрозділ складається на 90% з цивільних людей. Ми вибрали цей шлях не тому, що він легкий, а тому, що він правильний. Кожен з нас розуміє, що справжня свобода потребує мужності, відповідальності та готовності стояти на передовій.'} />
-                <Image className={style['content-image-container']} url={faceImg}/>
+                <Image className={style['content-image-container']} url={faceImg} alt='face-image' />
             </div>
 
             <div className={style['content-row']}>
-                <Image className={style['content-image-container']} url={gunImg}/>
+                <Image className={style['content-image-container']} url={gunImg} alt='gun-image' />
                 <TextAbout 
                 className={style['content-text-container']}
                 titleText={'ШЛЯХ'}

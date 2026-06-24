@@ -1,9 +1,24 @@
 import style from './HelpSection.module.css'
 import Image from '../Image/Image'
-import actualHelp from '../../actualHelp.json'
 import tumbleweed from '../../assets/Tumbleweed_rolling.webp'
+import { useState, useEffect } from 'react'
+import { getFundraisers } from '../../api/app-api'
+
 
 const HelpSection = ({actualHelp}) => {
+    const [fundraisers, setFundraisers] = useState([])
+
+    useEffect(() => {
+        const fetchFundraiser = async () => {
+            try {
+                const data = await getFundraisers()
+                setFundraisers(data)
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    })
+
     return (
         <section id='help' className={style['helpSection']}>
             <div className={style['headerContainer']}>
@@ -13,12 +28,12 @@ const HelpSection = ({actualHelp}) => {
 
             <div className={style['contentContainer']}>
                 <div className={style['imageWrapper']}>
-                    <Image url={actualHelp ? '' : tumbleweed} className={style['helpImage']} />
+                    <Image url={fundraisers.length > 0 ? '' : tumbleweed} className={style['helpImage']} />
                 </div>
 
                 <div className={style['textContainer']}>
-                    <h3 className={style['contentTitle']}>{actualHelp ? 'Назва необхідного': 'Наразі немає актуальних зборів!'}</h3>
-                    {actualHelp && (
+                    <h3 className={style['contentTitle']}>{fundraisers.length > 0 ? 'Назва необхідного': 'Наразі немає актуальних зборів!'}</h3>
+                    {fundraisers.length > 0 && (
                         <>
                         <p className={style['description']}>Опис необхідного обладнання</p>
                         <a className={style['link']}>Допомогти<span className={style['arrow']}>&gt;</span></a>

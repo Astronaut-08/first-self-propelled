@@ -10,6 +10,7 @@ from app.schemas.schemas import (
     FundraiserCreate, FundraiserUpdate,
     QuestionCreate, QuestionUpdate
 )
+from app.services.whatsapp_client import send_whatsapp_message
 
 # --- Vacantions ---
 async def get_all_vacancies(db: AsyncSession, include_inactive: bool = False):
@@ -47,13 +48,18 @@ async def delete_vacancy(db: AsyncSession, vacancy_id: int) -> Vacancy:
     await db.commit()
     return vacancy
 
-# --- Applying ---
+# --- Application ---
 async def get_all_apllications(db: AsyncSession):
     data = await db.scalars(select(Application))
     return data.all()
 
 async def get_application_by_id(db: AsyncSession, application_id: int) -> Application:
-    application = await db.get(Application, application_id, options=[selectinload(Application.vacancy)])
+    res = await db.execute(
+        select(Application)
+        .options(selectinload(Application.vacancy))
+        .where(Application.id == application_id)
+    )
+    application = res.scalar_one_or_none()
     if not application:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Заявку не знайдено')
     return application
@@ -63,7 +69,23 @@ async def create_application(db: AsyncSession, application_data: ApplicationCrea
     db.add(db_application)
     await db.commit()
     await db.refresh(db_application)
-    return db_application
+
+    vacancies = await get_vacancy_by_id(db=db, vacancy_id=db_application.vacancy_id)
+    message = (
+        f'Новий кандидат:\n'
+        f'Ім\'я: {db_application.name}\n'
+        f'Номер тел.: {db_application.phone}'
+        f'\nE-mail: {db_application.email}\n'
+        f'Бажаний час зв\'язку: {db_application.prefer_time}\n'
+        f'Бажана вакансія: {vacancies.title if vacancies else 'Не вказано'}\n'
+        f'Дата створення: {db_application.created_at}'
+    )
+    try:
+        await send_whatsapp_message(message)
+    except Exception as e:
+        print(f'[WhatsApp] Error send message: {e}')
+
+    return await get_application_by_id(db=db, application_id=db_application.id)
 
 # --- Fundraisers ---
 async def get_all_fundraisers(db: AsyncSession, include_inactive: bool = False):

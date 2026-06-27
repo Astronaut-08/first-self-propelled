@@ -20,10 +20,9 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
-    # META_API_VERSION: str = "v18.0"
-    # META_ACCESS_TOKEN: str
-    # META_VERIFY_TOKEN: str
-    # META_PHONE_NUMBER_ID: str | None = None
+    # Sending message
+    SEND_MSG_URL: str
+    WA_GROUP_ID: str
 
     # Конфігурація самого класу Pydantic Settings
     model_config = SettingsConfigDict(

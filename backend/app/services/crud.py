@@ -1,3 +1,4 @@
+import asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
@@ -64,26 +65,39 @@ async def get_application_by_id(db: AsyncSession, application_id: int) -> Applic
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Заявку не знайдено')
     return application
 
+async def _send_whatsapp_safe(message: str) -> None:
+    try:
+        await send_whatsapp_message(message)
+    except Exception as e:
+        print(f'[WhatsApp] Error send message: {e}')
+
 async def create_application(db: AsyncSession, application_data: ApplicationCreate) -> Application:
     db_application = Application(**application_data.model_dump())
     db.add(db_application)
     await db.commit()
     await db.refresh(db_application)
 
-    vacancies = await get_vacancy_by_id(db=db, vacancy_id=db_application.vacancy_id)
+    # Перевірка чи вказана вакансія 
+    if db_application.vacancy_id is not None:
+        try:
+            vacancy = await get_vacancy_by_id(db=db, vacancy_id=db_application.vacancy_id)
+            vacancy_title = vacancy.title
+        except HTTPException:
+            vacancy_title = 'Невідома вакансія (перевірте безпеку сайту)'
+    else:
+        vacancy_title = 'Не вказано'
+
     message = (
         f'Новий кандидат:\n'
         f'Ім\'я: {db_application.name}\n'
         f'Номер тел.: {db_application.phone}'
         f'\nE-mail: {db_application.email}\n'
         f'Бажаний час зв\'язку: {db_application.prefer_time}\n'
-        f'Бажана вакансія: {vacancies.title if vacancies else 'Не вказано'}\n'
+        f'Бажана вакансія: {vacancy_title}\n'
         f'Дата створення: {db_application.created_at}'
     )
-    try:
-        await send_whatsapp_message(message)
-    except Exception as e:
-        print(f'[WhatsApp] Error send message: {e}')
+    
+    asyncio.create_task(_send_whatsapp_safe(message=message))
 
     return await get_application_by_id(db=db, application_id=db_application.id)
 

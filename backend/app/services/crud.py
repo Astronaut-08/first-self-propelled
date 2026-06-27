@@ -2,7 +2,7 @@ import asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, BackgroundTasks
 
 from app.models.models import Vacancy, Application, Fundraiser, Question
 from app.schemas.schemas import (
@@ -69,9 +69,15 @@ async def _send_whatsapp_safe(message: str) -> None:
     try:
         await send_whatsapp_message(message)
     except Exception as e:
+        import traceback # Не потрібно імпортувати і вантажити лишній раз якщо немає помилки 
         print(f'[WhatsApp] Error send message: {e}')
+        print(traceback.format_exc())
 
-async def create_application(db: AsyncSession, application_data: ApplicationCreate) -> Application:
+async def create_application(
+    db: AsyncSession,
+    application_data: ApplicationCreate,
+    background_tasks: BackgroundTasks | None = None
+) -> Application:
     db_application = Application(**application_data.model_dump())
     db.add(db_application)
     await db.commit()
@@ -96,8 +102,12 @@ async def create_application(db: AsyncSession, application_data: ApplicationCrea
         f'Бажана вакансія: {vacancy_title}\n'
         f'Дата створення: {db_application.created_at}'
     )
-    
-    asyncio.create_task(_send_whatsapp_safe(message=message))
+
+    print(f'[Application] Queue WhatsApp send for application_id={db_application.id} vacancy_id={db_application.vacancy_id}')
+    if background_tasks is not None:
+        background_tasks.add_task(_send_whatsapp_safe, message)
+    else:
+        asyncio.create_task(_send_whatsapp_safe(message=message))
 
     return await get_application_by_id(db=db, application_id=db_application.id)
 

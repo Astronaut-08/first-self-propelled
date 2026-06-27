@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, BackgroundTasks
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -96,8 +96,16 @@ async def read_application(application_id: int, db=Depends(get_db)):
     return await crud.get_application_by_id(application_id=application_id, db=db)
 
 @router.post('/applications', response_model=ApplicationResponce, status_code=201, tags=['Applications'])
-async def add_application(application: ApplicationCreate, db=Depends(get_db)):
-    return await crud.create_application(db=db, application_data=application)
+async def add_application(
+    application: ApplicationCreate,
+    background_tasks: BackgroundTasks,
+    db=Depends(get_db)
+):
+    return await crud.create_application(
+        db=db,
+        application_data=application,
+        background_tasks=background_tasks
+    )
 
 # ══════════════════════════════════════════════
 # FUNDRAISERS

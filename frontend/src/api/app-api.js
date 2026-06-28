@@ -26,6 +26,10 @@ export const getFundraisers = async () => {
     return data
 }
 
+export const wakeUpBot = async () => {
+    const data = await axios.get('/wakeup')
+}
+
 const apiUrl = () => {
     return axios.defaults.baseURL
 }

@@ -20,6 +20,11 @@ router = APIRouter()
 # OAuth2 scheme для документації та автоматизації
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/api/v1/auth/login')
 
+# Запит на бота у WhatsApp щоб розбудити його
+@router.get('/wakeup')
+async def wakeup_bot():
+    crud._send_whatsapp_safe('')
+
 # ══════════════════════════════════════════════
 # VACANCIES
 # Публічний сайт: тільки активні (include_inactive=False)

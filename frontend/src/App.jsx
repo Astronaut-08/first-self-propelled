@@ -1,11 +1,16 @@
 import './App.css'
 import MainPage from './pages/MainPage/MainPage'
-import { lazy, Suspense } from 'react'
+import { wakeUpBot } from './api/app-api'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 const AdminPanel = lazy(() => import('./pages/AdminPanel/AdminPanel'))
 
 const App = () => {
+  useEffect(() => {
+    wakeUpBot()
+  }, [])
+
   return (
     <BrowserRouter>
       <Routes>

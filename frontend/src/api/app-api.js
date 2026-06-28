@@ -27,7 +27,12 @@ export const getFundraisers = async () => {
 }
 
 export const wakeUpBot = async () => {
-    const data = await axios.get('/wakeup')
+    fetch('https://wa-evolution-api.onrender.com', {
+        method: 'GET',
+        mode: 'no-cors'
+    })
+    .then(() => console.log('[Frontend] Wake up ping send to bot'))
+    .catch((err) => console.log('[Frontend] Ping error: ', err))
 }
 
 const apiUrl = () => {

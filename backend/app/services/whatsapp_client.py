@@ -5,7 +5,7 @@ from app.core.config import settings
 
 async def send_whatsapp_message(text: str, to: str = settings.WA_GROUP_ID):
     url = settings.SEND_MSG_URL
-    headers = {
+    headers_post = {
         'apikey': settings.SECRET_KEY,
         'Content-type': 'application/json'
     }
@@ -20,9 +20,9 @@ async def send_whatsapp_message(text: str, to: str = settings.WA_GROUP_ID):
     print(f'[WhatsApp] Payload={payload}')
 
     is_wakeup_call = (text == '')
-    base_url = '/'.join(url.split('/')[:3])
+    wakeup_url = 'https://wa-evolution-api.onrender.com'
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
+    async with httpx.AsyncClient(timeout=30.0, follow_redirects=True) as client:
         tries = 10
         delay = 15
 
@@ -30,10 +30,13 @@ async def send_whatsapp_message(text: str, to: str = settings.WA_GROUP_ID):
             try:
                 if is_wakeup_call:
                     print(f'[WhatsApp] Пробуємо розбудити бота')
-                    response = await client.get(base_url)
+                    headers_get = {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                    }
+                    response = await client.get(wakeup_url, headers=headers_get)
                 else:
                     print(f'[WhatsApp] Спроба={attempt}. Відправка повідомлення..')
-                    response = await client.post(url, json=payload, headers=headers)
+                    response = await client.post(url, json=payload, headers=headers_post)
                 
                 if is_wakeup_call:
                     print(f'[WhatsApp] Бот прокинувся успішно')
@@ -49,7 +52,7 @@ async def send_whatsapp_message(text: str, to: str = settings.WA_GROUP_ID):
                 print(f'[WhatsApp] Успішна відповідь={data}')
                 return data
             
-            except (httpx.TimeoutException, httpx.HTTPStatusError) as e:
+            except (httpx.TimeoutException, httpx.HTTPStatusError, httpx.RequestError) as e:
                 print(f'[WhatsApp] Помилка на спробі {attempt}: {e}')
                 
                 if attempt < tries:

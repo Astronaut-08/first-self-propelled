@@ -14,6 +14,7 @@ from app.schemas.schemas import (
 )
 from app.services import crud
 from app.services.auth import login_admin, get_current_admin
+from app.services.whatsapp_client import send_whatsapp_message
 
 router = APIRouter()
 
@@ -22,8 +23,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/api/v1/auth/login')
 
 # Запит на бота у WhatsApp щоб розбудити його
 @router.get('/wakeup')
-async def wakeup_bot():
-    crud._send_whatsapp_safe('')
+async def wakeup_bot(backgroundtask: BackgroundTasks):
+    backgroundtask.add_task(send_whatsapp_message, '')
+    return {'status': 'wakeup_process_started'}
 
 # ══════════════════════════════════════════════
 # VACANCIES

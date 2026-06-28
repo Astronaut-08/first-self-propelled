@@ -44,19 +44,26 @@ const JoinForm = () => {
     }, [])
     
     const handleSubmit = async (value, action) => {
+        const submissionPromise = submitApplication({
+            name: value.name,
+            phone: value.number,
+            email: value.email,
+            prefer_time: value.time,
+            vacancy_id: value.position ? Number(value.position) : null
+        })
+
+        toast.promise(submissionPromise, {
+            loading: 'Відбувається відправка даних, зачекайте будь ласка...',
+            success: 'Дані успішно відправлено! Очікуйте дзвінка!',
+            error: 'Щось пішло не так.. Спробуйте ще раз'
+        })
+
+
         try {
-            await submitApplication({
-                name: value.name,
-                phone: value.number,
-                email: value.email,
-                prefer_time: value.time,
-                vacancy_id: value.position ? Number(value.position) : null
-            })
-            toast.success('Дані успішно відправлено! Очікуйте дзвінка!')
+            await submissionPromise
         } catch (e) {
             console.error(e)
-            toast.error('Щось пішло не так...')
-        }
+        } 
     }
 
     return (
@@ -105,7 +112,7 @@ const JoinForm = () => {
 
                     <div className={style['field-group']}>
                         <label htmlFor='time' className={style['label']}>Коли зателефонувати?</label>
-                        <Field type='text' name='time' id='time' placeholder='01/01/2026 17:00' 
+                        <Field type='datetime-local' name='time' id='time' placeholder='01/01/2026 17:00' 
                         className={`${style['input']} ${errors.time && touched.time ? style['input-error'] : ''}`}/>
                         <ErrorMessage name='time' component='span' className={style['error']}/>
                     </div>
